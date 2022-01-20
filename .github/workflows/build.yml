@@ -18,85 +18,88 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 16
+          node-version: '14.x'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      # - name: Scaning code
-      #   uses: aquasecurity/trivy-action@0.2.0
-      #   with:
-      #     scan-type: "fs"
-      #     ignore-unfixed: true
-      #     format: "table"
-      #     template: "@/contrib/sarif.tpl"
-      #     severity: "MEDIUM,HIGH,CRITICAL"
+      - name: Scaning code
+        uses: aquasecurity/trivy-action@0.2.0
+        with:
+          scan-type: "fs"
+          ignore-unfixed: true
+          format: "table"
+          template: "@/contrib/sarif.tpl"
+          severity: "MEDIUM,HIGH,CRITICAL"
 
-      # - name: Linting
-      #   run: npm run lint
+      - name: Linting
+        run: npm run lint
 
-      # - name: Detecting secrets
-      #   uses: reviewdog/action-detect-secrets@v0.7
-      #   with:
-      #     reporter: github-check
-      #     github_token: ${{ secrets.github_token }}
-      #     fail_on_error: true
-      #     detect_secrets_flags: --exclude-files .git
+      - name: Detecting secrets
+        uses: reviewdog/action-detect-secrets@v0.7
+        with:
+          reporter: github-check
+          github_token: ${{ secrets.github_token }}
+          fail_on_error: true
+          detect_secrets_flags: --exclude-files .git
 
-      # - name: Reviewing shell files
-      #   uses: reviewdog/action-shellcheck@v1.13
-      #   with:
-      #     reporter: github-check
-      #     github_token: ${{ secrets.github_token }}
-      #     exclude: "./.git/*"
-      #     fail_on_error: true
+      - name: Reviewing shell files
+        uses: reviewdog/action-shellcheck@v1.13
+        with:
+          reporter: github-check
+          github_token: ${{ secrets.github_token }}
+          exclude: "./.git/*"
+          fail_on_error: true
 
-  # test:
-  #   runs-on: ubuntu-20.04
+  test:
+    runs-on: ubuntu-20.04
 
-  #   steps:
-  #     - name: Checking out
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checking out
+        uses: actions/checkout@v2
 
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: 16
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+          cache: 'npm'
 
-  #     - name: Install dependencies
-  #       run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-  #     - name: Testing
-  #       run: npm t
+      - name: Testing
+        run: npm t
 
-      # - name: Uploading coverage
-      #   uses: codacy/codacy-coverage-reporter-action@v1
-      #   with:
-      #     api-token: ${{ secrets.CODACY_API_TOKEN }}
-      #     coverage-reports: ./coverage/lcov.info
-      #   env:
-      #     CODACY_PROJECT_NAME: "bodleian-frontend"
-      #     CODACY_ORGANIZATION_PROVIDER: "gh"
-      #     CODACY_USERNAME: "${{ github.repository_owner }}"
+      - name: Uploading coverage
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          api-token: ${{ secrets.CODACY_API_TOKEN }}
+          coverage-reports: ./coverage/lcov.info
+        env:
+          CODACY_PROJECT_NAME: "bodleian-frontend"
+          CODACY_ORGANIZATION_PROVIDER: "gh"
+          CODACY_USERNAME: "${{ github.repository_owner }}"
 
 
-    # build:
-    #   runs-on: ubuntu-20.04
-    #   needs:
-    #   - qa
-    #   - test
+    build:
+      runs-on: ubuntu-20.04
+      needs:
+      - qa
+      - test
 
-    #   steps:
-    #   - name: Checking out
-    #     uses: actions/checkout@v2
+      steps:
+      - name: Checking out
+        uses: actions/checkout@v2
 
-    #   - name: Set up Node.js
-    #     uses: actions/setup-node@v1
-    #     with:
-    #       node-version: 16
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+          cache: 'npm'
 
-    #   - name: Install dependencies
-    #     run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    #   - name: Build
-    #     run: npm run build
+      - name: Build
+        run: npm run build
