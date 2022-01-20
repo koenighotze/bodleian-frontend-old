@@ -44,13 +44,13 @@ jobs:
           fail_on_error: true
           detect_secrets_flags: --exclude-files .git
 
-      - name: Reviewing shell files
-        uses: reviewdog/action-shellcheck@v1.13
-        with:
-          reporter: github-check
-          github_token: ${{ secrets.github_token }}
-          exclude: "./.git/*"
-          fail_on_error: true
+      # - name: Reviewing shell files
+      #   uses: reviewdog/action-shellcheck@v1.13
+      #   with:
+      #     reporter: github-check
+      #     github_token: ${{ secrets.github_token }}
+      #     exclude: "./.git/*"
+      #     fail_on_error: true
 
   # test:
   #   runs-on: ubuntu-20.04
