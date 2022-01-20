@@ -62,7 +62,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: '14.x'
           cache: 'npm'
 
       - name: Install dependencies
@@ -82,24 +82,24 @@ jobs:
   #         CODACY_USERNAME: "${{ github.repository_owner }}"
 
 
-  #   build:
-  #     runs-on: ubuntu-20.04
-  #     needs:
-  #     - qa
-  #     - test
+    build:
+      runs-on: ubuntu-20.04
+      needs:
+      - qa
+      - test
 
-  #     steps:
-  #     - name: Checking out
-  #       uses: actions/checkout@v2
+      steps:
+      - name: Checking out
+        uses: actions/checkout@v2
 
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: '14.x'
-  #         cache: 'npm'
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+          cache: 'npm'
 
-  #     - name: Install dependencies
-  #       run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-  #     - name: Build
-  #       run: npm run build
+      - name: Build
+        run: npm run build
