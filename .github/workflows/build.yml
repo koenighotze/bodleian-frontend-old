@@ -33,7 +33,7 @@ jobs:
           severity: "MEDIUM,HIGH,CRITICAL"
 
       - name: Linting
-        run: echo "TODO"
+        run: npm run lint
 
       - name: Detecting secrets
         uses: reviewdog/action-detect-secrets@v0.7
@@ -69,12 +69,34 @@ jobs:
       - name: Testing
         run: npm t
 
-      # - name: Uploading coverage
-      #   uses: codacy/codacy-coverage-reporter-action@v1
-      #   with:
-      #     api-token: ${{ secrets.CODACY_API_TOKEN }}
-      #     coverage-reports: ./target/site/jacoco/jacoco.xml
-      #   env:
-      #     CODACY_PROJECT_NAME: "bodleian-frontend"
-      #     CODACY_ORGANIZATION_PROVIDER: "gh"
-      #     CODACY_USERNAME: "${{ github.repository_owner }}"
+      - name: Uploading coverage
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          api-token: ${{ secrets.CODACY_API_TOKEN }}
+          coverage-reports: ./coverage/lcov.info
+        env:
+          CODACY_PROJECT_NAME: "bodleian-frontend"
+          CODACY_ORGANIZATION_PROVIDER: "gh"
+          CODACY_USERNAME: "${{ github.repository_owner }}"
+
+
+    build:
+      runs-on: ubuntu-20.04
+      needs:
+      - qa
+      - test
+
+      steps:
+      - name: Checking out
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
