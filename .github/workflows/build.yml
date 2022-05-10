@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Scaning code
-        uses: aquasecurity/trivy-action@0.2.2
+        uses: aquasecurity/trivy-action@0.3.0
         with:
           scan-type: "fs"
           ignore-unfixed: true
